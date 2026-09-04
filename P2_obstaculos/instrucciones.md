@@ -15,9 +15,7 @@ lee bien los comentarios, apóyate en lo que ya vimos en clases anteriores sobre
 1. Define el intervalo de aparición de meteoritos.
 2. Genera un meteorito nuevo cada cierto intervalo de tiempo.
 3. Mueve todos los meteoritos hacia abajo en cada cuadro.
-4. Elimina de la lista los que ya salieron de la pantalla (esto es importante:
-   si no lo haces, la lista crecerá para siempre y el juego se hará cada vez
-   más lento).
+4. Elimina de la lista los que ya salieron de la pantalla (si no lo haces, la lista crecerá para siempre y el juego se hará cada vez más lento).
 
 ## Cómo saber que funcionó
 

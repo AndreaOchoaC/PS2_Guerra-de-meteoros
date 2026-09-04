@@ -1,6 +1,5 @@
 """
 PARTE 3: Colisiones, puntaje y game over
-Esta es la última parte: ¡ahora depende más de ti!
 Lee los TODO con atención, pero esta vez no incluyen pistas de código.
 """
 import pygame
@@ -21,6 +20,7 @@ COLOR_METEORITO = (255, 100, 60)
 COLOR_TEXTO = (255, 255, 255)
 
 fuente = pygame.font.SysFont(None, 36)
+fuente_grande = pygame.font.SysFont(None, 64)
 
 JUGADOR_ANCHO, JUGADOR_ALTO = 50, 20
 jugador_x = ANCHO // 2 - JUGADOR_ANCHO // 2
@@ -34,8 +34,10 @@ INTERVALO_APARICION = 800
 ultimo_spawn = pygame.time.get_ticks()
 
 # TODO 1: Crea una variable para llevar el puntaje del jugador, inicializada en 0.
+puntos = 0
 
 # TODO 2: Crea una variable booleana `juego_terminado` inicializada en False.
+juego_terminado = False
 
 corriendo = True
 while corriendo:
@@ -46,10 +48,12 @@ while corriendo:
     teclas = pygame.key.get_pressed()
 
     # TODO 3: Haz que el jugador solo pueda moverse mientras `juego_terminado` sea False.
-    if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
-        jugador_x -= VELOCIDAD_JUGADOR
-    if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
-        jugador_x += VELOCIDAD_JUGADOR
+    
+    if not juego_terminado:
+        if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
+            jugador_x -= VELOCIDAD_JUGADOR
+        if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
+            jugador_x += VELOCIDAD_JUGADOR
     jugador_x = max(0, min(jugador_x, ANCHO - JUGADOR_ANCHO))
 
     tiempo_actual = pygame.time.get_ticks()
@@ -69,20 +73,34 @@ while corriendo:
     # Pista de concepto (sin código): pygame.Rect tiene un método para saber si
     # colisiona con otro Rect. Revisa la documentación de pygame.Rect si no lo recuerdas.
 
-    # TODO 5: Mientras el juego NO haya terminado, aumenta el puntaje con el paso
-    # del tiempo (por ejemplo, sumando 1 cada cuadro, o usando el tiempo transcurrido).
+    for meteorito in meteoritos:
+        if jugador_rect.colliderect(meteorito):
+            juego_terminado = True
 
-    # TODO 6: Dibuja el puntaje en pantalla usando la fuente ya creada (`fuente`).
-    # Pista de concepto: fuente.render(texto, True, color) crea una "superficie"
-    # de texto que luego se dibuja con pantalla.blit(superficie, (x, y)).
-
-    # TODO 7: Si `juego_terminado` es True, muestra un mensaje de "Game Over"
-    # en el centro de la pantalla en vez de (o además de) seguir el juego normal.
+        # TODO 5: Mientras el juego NO haya terminado, aumenta el puntaje con el paso
+        # del tiempo (por ejemplo, sumando 1 cada cuadro, o usando el tiempo transcurrido).
+  
+    if not juego_terminado:
+        puntos += 1 # dentro del ciclo!
 
     pantalla.fill(COLOR_FONDO)
     pygame.draw.rect(pantalla, COLOR_JUGADOR, jugador_rect)
     for meteorito in meteoritos:
         pygame.draw.rect(pantalla, COLOR_METEORITO, meteorito)
+
+    # TODO 6: Dibuja el puntaje en pantalla usando la fuente ya creada (`fuente`).
+    # Pista de concepto: fuente.render(texto, True, color) crea una "superficie"
+    # de texto que luego se dibuja con pantalla.blit(superficie, (x, y)).
+    texto_puntaje = fuente.render(f"Puntaje: {puntos // 10}", True, COLOR_TEXTO)
+    pantalla.blit(texto_puntaje, (10, 10)) # dibuja el texto en coordenadas 10,10
+
+    # TODO 7: Si `juego_terminado` es True, muestra un mensaje de "Game Over"
+    # en el centro de la pantalla y termina el juego.
+
+    if juego_terminado:
+        texto_gameover = fuente_grande.render("GAME OVER", True, COLOR_TEXTO)
+        rect_texto = texto_gameover.get_rect(center=(ANCHO // 2, ALTO // 2))
+        pantalla.blit(texto_gameover, rect_texto)
 
     pygame.display.flip()
     reloj.tick(FPS)
