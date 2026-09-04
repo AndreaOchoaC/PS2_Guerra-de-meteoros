@@ -1,4 +1,4 @@
-# 🚀 Esquiva los Meteoritos
+# 🚀 Guerra de meteoritos
 
 Proyecto de repaso de PyGame. Vamos a construir el juego **por partes**, avanzando
 de una carpeta a la siguiente. Cada parte tiene un `main.py` con código incompleto
