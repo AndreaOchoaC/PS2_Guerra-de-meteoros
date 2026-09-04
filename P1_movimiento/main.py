@@ -30,14 +30,18 @@ while corriendo:
 
     # TODO 1: Obtén el estado de todas las teclas presionadas.
     # Pista: pygame.key.get_pressed() devuelve una lista de booleanos.
-    teclas = None
+    teclas = pygame.key.get_pressed()
 
     # TODO 2: Si se presiona la flecha izquierda o "A", disminuye jugador_x
     # (recuerda que en pygame, x=0 es el borde izquierdo)
     # Pista: teclas[pygame.K_LEFT] o teclas[pygame.K_a]
+    if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
+        jugador_x -= VELOCIDAD_JUGADOR
 
     # TODO 3: Si se presiona la flecha derecha o "D", aumenta jugador_x
     # Pista: teclas[pygame.K_RIGHT] o teclas[pygame.K_d]
+    if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
+            jugador_x += VELOCIDAD_JUGADOR
 
     # TODO 4: Evita que el jugador se salga de la pantalla por los lados.
     # Pista: usa dos condicionales que comparen jugador_x con 0
