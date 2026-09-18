@@ -20,7 +20,16 @@ COLOR_JUGADOR = (0, 200, 255)
 COLOR_METEORITO = (255, 100, 60)
 COLOR_TEXTO = (255, 255, 255)
 
+
+
 fuente = pygame.font.SysFont(None, 36)
+fuente_grande = pygame.font.SysFont(None, 64)
+
+
+sprite_jugador = pygame.image.load('MEDIA/Nagisa_png_6.png').convert_alpha()
+sprite_meteorito = pygame.image.load('MEDIA/tomate.png').convert_alpha()
+sprite_jugador = pygame.transform.scale(sprite_jugador, (50,50))
+sprite_meteorito = pygame.transform.scale(sprite_meteorito, (50,50))
 
 JUGADOR_ANCHO, JUGADOR_ALTO = 50, 20
 jugador_x = ANCHO // 2 - JUGADOR_ANCHO // 2
@@ -36,7 +45,7 @@ ultimo_spawn = pygame.time.get_ticks()
 # TODO 1: Crea una variable para llevar el puntaje del jugador, inicializada en 0.
 
 # TODO 2: Crea una variable booleana `juego_terminado` inicializada en False.
-
+juego_terminado = False
 corriendo = True
 while corriendo:
     for evento in pygame.event.get():
@@ -46,11 +55,13 @@ while corriendo:
     teclas = pygame.key.get_pressed()
 
     # TODO 3: Haz que el jugador solo pueda moverse mientras `juego_terminado` sea False.
-    if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
-        jugador_x -= VELOCIDAD_JUGADOR
-    if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
-        jugador_x += VELOCIDAD_JUGADOR
-    jugador_x = max(0, min(jugador_x, ANCHO - JUGADOR_ANCHO))
+    if juego_terminado == False:
+        if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
+            jugador_x -= VELOCIDAD_JUGADOR
+        if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
+            jugador_x += VELOCIDAD_JUGADOR
+        jugador_x = max(0, min(jugador_x, ANCHO - JUGADOR_ANCHO))
+
 
     tiempo_actual = pygame.time.get_ticks()
     if tiempo_actual - ultimo_spawn >= INTERVALO_APARICION:
@@ -64,6 +75,15 @@ while corriendo:
 
     jugador_rect = pygame.Rect(jugador_x, jugador_y, JUGADOR_ANCHO, JUGADOR_ALTO)
 
+    for meteorito in meteoritos:
+        if jugador_rect.colliderect(meteorito):
+            juego_terminado = True
+
+
+    
+
+
+        
     # TODO 4: Detecta si el jugador choca con algún meteorito.
     # Si choca, marca `juego_terminado = True`.
     # Pista de concepto (sin código): pygame.Rect tiene un método para saber si
@@ -80,12 +100,24 @@ while corriendo:
     # en el centro de la pantalla en vez de (o además de) seguir el juego normal.
 
     pantalla.fill(COLOR_FONDO)
-    pygame.draw.rect(pantalla, COLOR_JUGADOR, jugador_rect)
+    pantalla.blit(sprite_jugador, (jugador_x, jugador_y))
     for meteorito in meteoritos:
-        pygame.draw.rect(pantalla, COLOR_METEORITO, meteorito)
+        pantalla.blit(sprite_meteorito, (meteorito.x, meteorito.y))
+
+    if juego_terminado:
+        print("Terminaste")
+        pantalla.fill("red")
+        texto_gameover = fuente.render("Perdiste", True, COLOR_TEXTO)
+        rect_texto = texto_gameover.get_rect(center=(ANCHO // 2, ALTO // 2))
+        pantalla.blit(texto_gameover, rect_texto)
+    
+
+
 
     pygame.display.flip()
     reloj.tick(FPS)
 
 pygame.quit()
 sys.exit()
+
+

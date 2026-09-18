@@ -46,8 +46,9 @@ while corriendo:
     # TODO 4: Evita que el jugador se salga de la pantalla por los lados.
     # Pista: usa dos condicionales que comparen jugador_x con 0
     # y con (ANCHO - JUGADOR_ANCHO)
+    if jugador_x < 0:
 
-    pantalla.fill(COLOR_FONDO)
+        pantalla.fill(COLOR_FONDO)
     pygame.draw.rect(
         pantalla, COLOR_JUGADOR, (jugador_x, jugador_y, JUGADOR_ANCHO, JUGADOR_ALTO)
     )

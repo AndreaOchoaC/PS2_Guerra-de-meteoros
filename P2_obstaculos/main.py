@@ -17,6 +17,7 @@ FPS = 60
 COLOR_FONDO = (20, 20, 40)
 COLOR_JUGADOR = (0, 200, 255)
 COLOR_METEORITO = (255, 100, 60)
+COLOR_TEXTO = (240, 194, 67)
 
 JUGADOR_ANCHO, JUGADOR_ALTO = 50, 20
 jugador_x = ANCHO // 2 - JUGADOR_ANCHO // 2
@@ -26,12 +27,12 @@ VELOCIDAD_JUGADOR = 6
 # --- Meteoritos ---
 # Cada meteorito lo representaremos como un pygame.Rect dentro de esta lista.
 meteoritos = []
-METEORITO_TAM = 30
+METEORITO_TAM = 35
 VELOCIDAD_METEORITO = 4
 
 # TODO 1: Define cada cuántos milisegundos debe aparecer un meteorito nuevo.
 # Sugerencia: 800 (0.8 segundos)
-INTERVALO_APARICION = None
+INTERVALO_APARICION = 800
 
 # Guardamos el momento (en ms) del último meteorito que apareció.
 ultimo_spawn = pygame.time.get_ticks()
@@ -57,6 +58,15 @@ while corriendo:
     #        - crea un pygame.Rect(x, 0, METEORITO_TAM, METEORITO_TAM)
     #        - agrégalo a la lista `meteoritos`
     #        - actualiza `ultimo_spawn` al tiempo actual
+    tiempo_actual = pygame.time.get_ticks()
+    if tiempo_actual - ultimo_spawn >= INTERVALO_APARICION:
+        x  = random.randint(0, ANCHO - METEORITO_TAM)
+        meteoritos.append(pygame.Rect(x, 0, METEORITO_TAM, METEORITO_TAM))
+        ultimo_spawn = tiempo_actual
+
+
+    for meteorito in meteoritos:
+        meteorito.y += VELOCIDAD_METEORITO
 
     # TODO 3: Mueve cada meteorito de la lista hacia abajo
     # (incrementa su coordenada y en VELOCIDAD_METEORITO).
