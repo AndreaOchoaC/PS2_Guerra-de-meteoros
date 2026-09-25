@@ -7,13 +7,24 @@ import pygame
 import random
 import sys
 
+
 pygame.init()
+
+pygame.mixer.init()
+pygame.mixer.music.load("media/fresita.mp3")
+pygame.mixer.music.set_volume(1)
+pygame.mixer.music.play(-1)
 
 ANCHO, ALTO = 800, 400
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Esquiva los Meteoritos")
 reloj = pygame.time.Clock()
 FPS = 60
+
+puntaje = 0
+aumento = 67
+nivel = 1
+
 
 COLOR_FONDO = (20, 20, 40)
 COLOR_JUGADOR = (0, 200, 255)
@@ -26,8 +37,8 @@ fuente = pygame.font.SysFont(None, 36)
 fuente_grande = pygame.font.SysFont(None, 64)
 
 
-sprite_jugador = pygame.image.load('MEDIA/Nagisa_png_6.png').convert_alpha()
-sprite_meteorito = pygame.image.load('MEDIA/tomate.png').convert_alpha()
+sprite_jugador = pygame.image.load('MEDIA/kabum.png').convert_alpha()
+sprite_meteorito = pygame.image.load('MEDIA/allinol.png').convert_alpha()
 sprite_jugador = pygame.transform.scale(sprite_jugador, (50,50))
 sprite_meteorito = pygame.transform.scale(sprite_meteorito, (50,50))
 
@@ -72,6 +83,7 @@ while corriendo:
     for meteorito in meteoritos:
         meteorito.y += VELOCIDAD_METEORITO
     meteoritos = [m for m in meteoritos if m.y < ALTO]
+    puntaje +=1
 
     jugador_rect = pygame.Rect(jugador_x, jugador_y, JUGADOR_ANCHO, JUGADOR_ALTO)
 
@@ -80,34 +92,29 @@ while corriendo:
             juego_terminado = True
 
 
-    
+    for i in range(4):
+        if puntaje //10 == i*aumento:
+            VELOCIDAD_METEORITO += 0.5
+            print("Aumenta la velocidad del meteoro a", VELOCIDAD_METEORITO)
+            nivel = i+1
 
-
-        
-    # TODO 4: Detecta si el jugador choca con algún meteorito.
-    # Si choca, marca `juego_terminado = True`.
-    # Pista de concepto (sin código): pygame.Rect tiene un método para saber si
-    # colisiona con otro Rect. Revisa la documentación de pygame.Rect si no lo recuerdas.
-
-    # TODO 5: Mientras el juego NO haya terminado, aumenta el puntaje con el paso
-    # del tiempo (por ejemplo, sumando 1 cada cuadro, o usando el tiempo transcurrido).
-
-    # TODO 6: Dibuja el puntaje en pantalla usando la fuente ya creada (`fuente`).
-    # Pista de concepto: fuente.render(texto, True, color) crea una "superficie"
-    # de texto que luego se dibuja con pantalla.blit(superficie, (x, y)).
-
-    # TODO 7: Si `juego_terminado` es True, muestra un mensaje de "Game Over"
-    # en el centro de la pantalla en vez de (o además de) seguir el juego normal.
 
     pantalla.fill(COLOR_FONDO)
     pantalla.blit(sprite_jugador, (jugador_x, jugador_y))
     for meteorito in meteoritos:
         pantalla.blit(sprite_meteorito, (meteorito.x, meteorito.y))
 
+    texto_puntaje = fuente.render(f"Puntaje : {puntaje // 10}", True, COLOR_TEXTO)
+    pantalla.blit(texto_puntaje, (10, 10))
+
+    texto_nivel = fuente.render(f"Nivel : {nivel}",True, COLOR_TEXTO)
+    pantalla.blit(texto_nivel, (200,20))
+
+
     if juego_terminado:
         print("Terminaste")
         pantalla.fill("red")
-        texto_gameover = fuente.render("Perdiste", True, COLOR_TEXTO)
+        texto_gameover = fuente_grande.render(f"Perdiste /n llegate al nivel {nivel} que fracasad@ eres", True, COLOR_TEXTO)
         rect_texto = texto_gameover.get_rect(center=(ANCHO // 2, ALTO // 2))
         pantalla.blit(texto_gameover, rect_texto)
     
