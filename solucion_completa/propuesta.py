@@ -27,7 +27,7 @@ fuente_grande = pygame.font.SysFont(None, 64)
 # crear sprites de los meteoritos y del jugador
 # usar las imágenes de MEDIA/meteorito.png y MEDIA/jugador.png
 # resize para que tengan el tamaño adecuado
-sprite_jugador = pygame.image.load("MEDIA/carro.png").convert_alpha()
+sprite_jugador = pygame.image.load("MEDIA/ship3.png").convert_alpha()
 sprite_meteorito = pygame.image.load("MEDIA/asteroid50x50.png").convert_alpha()
 
 sprite_jugador = pygame.transform.scale(sprite_jugador, (50, 50))
@@ -81,8 +81,8 @@ while corriendo:
             juego_terminado = True
 
     # usar la imagen de fondo para llenar la pantalla, en lugar de un color sólido
-    #fondo = pygame.image.load("MEDIA/sky2.jpg").convert()
-    #pantalla.blit(fondo, (0, 0))
+    fondo = pygame.image.load("MEDIA/sky2.jpg").convert()
+    pantalla.blit(fondo, (0, 0))
     # usar los sprites para dibujar al jugador y a los meteoritos
     
     pantalla.blit(sprite_jugador, (jugador_x, jugador_y))
