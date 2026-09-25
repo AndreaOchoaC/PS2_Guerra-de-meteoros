@@ -10,6 +10,11 @@ import sys
 
 pygame.init()
 
+pygame.mixer.init()
+pygame.mixer.music.load("MEDIA/mi_musica1.mp3")
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
+
 ANCHO, ALTO = 800, 400
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Esquiva los Meteoritos")
@@ -33,6 +38,9 @@ sprite_meteorito = pygame.image.load("MEDIA/asteroid50x50.png").convert_alpha()
 sprite_jugador = pygame.transform.scale(sprite_jugador, (50, 50))
 sprite_meteorito = pygame.transform.scale(sprite_meteorito, (50, 50))
 
+# NOTA PARA PILAR: Rotar la imagen del jugador 90/120° si sale del lado incorrecto
+#sprite_jugador = pygame.transform.rotate(sprite_jugador, 90)
+
 JUGADOR_ANCHO, JUGADOR_ALTO = 50, 50
 jugador_x = ANCHO // 2 - JUGADOR_ANCHO // 2
 jugador_y = ALTO - 50
@@ -45,6 +53,9 @@ INTERVALO_APARICION = 800
 ultimo_spawn = pygame.time.get_ticks()
 
 puntaje = 0
+aumento = 40
+nivel = 1
+
 juego_terminado = False
 
 corriendo = True
@@ -74,6 +85,11 @@ while corriendo:
 
         puntaje += 1
 
+        for i in range(5):
+            if puntaje//10 == i*aumento:
+                VELOCIDAD_METEORITO += 0.5
+                nivel = i+1
+
     jugador_rect = pygame.Rect(jugador_x, jugador_y, JUGADOR_ANCHO, JUGADOR_ALTO)
 
     for meteorito in meteoritos:
@@ -86,16 +102,23 @@ while corriendo:
     # usar los sprites para dibujar al jugador y a los meteoritos
     
     pantalla.blit(sprite_jugador, (jugador_x, jugador_y))
+
     for meteorito in meteoritos:
         pantalla.blit(sprite_meteorito, (meteorito.x, meteorito.y))
 
     texto_puntaje = fuente.render(f"Puntaje: {puntaje // 10}", True, COLOR_TEXTO)
     pantalla.blit(texto_puntaje, (10, 10))
 
+    texto_nivel = fuente.render(f"Nivel: {nivel}", True, COLOR_TEXTO)
+    pantalla.blit(texto_nivel, (650, 10))
+
     if juego_terminado:
-        texto_gameover = fuente_grande.render("GAME OVER", True, COLOR_TEXTO)
-        rect_texto = texto_gameover.get_rect(center=(ANCHO // 2, ALTO // 2))
-        pantalla.blit(texto_gameover, rect_texto)
+        texto_gameover1 = fuente_grande.render("PERDISTE ", True, COLOR_TEXTO)
+        texto_gameover2 = fuente.render(f"Llegaste al nivel {nivel} ", True, COLOR_TEXTO)
+        rect_texto = texto_gameover1.get_rect(center=(ANCHO // 2, ALTO // 2))
+        rect_texto2 = texto_gameover2.get_rect(center=(ANCHO // 2, ALTO // 2 + 50))
+        pantalla.blit(texto_gameover1, rect_texto)
+        pantalla.blit(texto_gameover2, rect_texto2)
 
     pygame.display.flip()
     reloj.tick(FPS)
