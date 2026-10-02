@@ -5,39 +5,44 @@
 command prompt: ir a la carpeta de documentos en donde tenemos nuestro proyecto
 
 `Documentos -> Github -> Guerra de Meteoros -> [main.py]`
+
 ** Importante! revisar que el main.py sea la versión del código que queremos
 
-`cmd + Enter`
+Una vez que estemos en la carpeta, colocarlos en la barra superior y hacer `cmd + Enter`
 
 ## 2. Instalar librerías
 `pip install pyinstaller`
-si no funciona correctamente, probar
-`pip install PyInstaller`
+
+si no funciona correctamente, probar `pip install PyInstaller`
+
 si también genera error, pasar a la terminal de VSCode
 
 ## 3. Revisar en dónde está nuestro main.py
 Como tenemos varias carpetas con distintas versiones del juego, debemos revisar en qué carpeta está la versión final
-* es útil "sacar" esa versión de su carpeta y dejarla en "Guerra de Meteoros"
+
+* Es útil "sacar" esa versión de su carpeta y dejarla en "Guerra de Meteoros"
 
 ## 4. Crear el ejecutable con PyInstaller
 `pyinstaller [opciones] myscript.py`
 
-esto creará un folder `dist` dentro del cuál guardará el `yscript.exe`
+esto creará un folder `dist` dentro del cuál guardará el `myscript.exe`
 
 ### Cambiar el path en donde queremos que se guarde
 `pyinstaller "C:\Documents and Settings\project\myscript.spec" `
 
 ### Opciones de pyinstaller (flags)
 `-F, --onefile`  Guarda todo el proyecto en un solo archivo
+
 `-D, --onedir`  Crea una carpeta con todo el contenido del ejecutable (opción por defecto)
+
 `-n, --name NAME`  Asigna un nombre distinto al archivo
+
 `--windowed`  Crea una ventana para visualizar el archivo (permite identificar errores)
 
 ## 5. Buscar el .exe en el directorio 'dist'
 * ¿Se puede ejecutar el juego?
 * CREAR NUEVAMENTE
 `pyinstaller myscript.py --onefile --windowed`
-
 * se ejecutará más rápido porque ya tenemos muchos de los archivos necesarios
 
 *¿Qué error nos arroja la ventana?*
@@ -64,5 +69,6 @@ en resumen:
 
 ## 9. Subir a GitHub y/o Google Drive
 
-## 10. Compartir con tus amigos :D
+## 10. Compartir con tus amigos ^-^
+
 ## ¡Probemos los juegos de los demás!
