@@ -13,7 +13,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.mixer.music.load("MEDIA/mi_musica1.mp3")
 pygame.mixer.music.set_volume(0.5)
-pygame.mixer.music.play(-1)
+pygame.mixer.music.play()
 
 ANCHO, ALTO = 800, 400
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
@@ -63,6 +63,7 @@ while corriendo:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             corriendo = False
+            pygame.mixer.music.stop()
 
     teclas = pygame.key.get_pressed()
 
@@ -115,6 +116,9 @@ while corriendo:
     boton_rect = pygame.Rect(ANCHO//2, ALTO//3, JUGADOR_ANCHO*2, JUGADOR_ALTO*2)
 
     if juego_terminado:
+        
+        pygame.mixer.music.stop()
+
         texto_gameover1 = fuente_grande.render("PERDISTE ", True, COLOR_TEXTO)
         texto_gameover2 = fuente.render(f"Llegaste al nivel {nivel} ", True, COLOR_TEXTO)
         rect_texto = texto_gameover1.get_rect(center=(ANCHO // 2, ALTO // 2))
