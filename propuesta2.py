@@ -112,6 +112,8 @@ while corriendo:
     texto_nivel = fuente.render(f"Nivel: {nivel}", True, COLOR_TEXTO)
     pantalla.blit(texto_nivel, (650, 10))
 
+    boton_rect = pygame.Rect(ANCHO//2, ALTO//3, JUGADOR_ANCHO*2, JUGADOR_ALTO*2)
+
     if juego_terminado:
         texto_gameover1 = fuente_grande.render("PERDISTE ", True, COLOR_TEXTO)
         texto_gameover2 = fuente.render(f"Llegaste al nivel {nivel} ", True, COLOR_TEXTO)
@@ -119,6 +121,15 @@ while corriendo:
         rect_texto2 = texto_gameover2.get_rect(center=(ANCHO // 2, ALTO // 2 + 50))
         pantalla.blit(texto_gameover1, rect_texto)
         pantalla.blit(texto_gameover2, rect_texto2)
+        pygame.draw.rect(pantalla, COLOR_JUGADOR, boton_rect)
+        mouse = pygame.mouse.get_pos()
+
+        if boton_rect.collidepoint(mouse):
+            print("Reiniciar")
+            nivel = 1
+            puntaje = 0
+            juego_terminado = False
+            meteoritos = []
 
     pygame.display.flip()
     reloj.tick(FPS)
